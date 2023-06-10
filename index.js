@@ -1,27 +1,26 @@
 const express = require("express");
-const app = express();
-const mongoose = require("mongoose");
-app.use(express.json());
-require("dotenv").config();
 const cors = require("cors");
-// const PORT = 4001;
-// const MONGO_URL =
-//   "mongodb+srv://avneesh:avneesh@cluster0.5qu5exk.mongodb.net/socialDB?retryWrites=true&w=majority";
-app.use(cors());
+const { mongoose } = require("mongoose");
+require("dotenv").config();
+ 
 const { userRouter } = require("./Router/user.Router");
-const { postRouter } = require("./Router/post.Router");
-const { authenticate } = require("./Middleware/authentication.middleware");
+const { emiRouter } = require("./Router/calculate.Route");
+const {authentication} = require('./Middleware/authentication.middleware');
 
-app.use("/users", userRouter);
+const app = express();
 
-app.use(authenticate);
 
-app.use("/posts", postRouter);
+app.use(cors());
+app.use(express.json());
+
+app.use("/user", userRouter);
+app.use(authentication);
+app.use("/emi", emiRouter);
 
 app.listen(process.env.PORT, async () => {
   try {
     await mongoose.connect(process.env.MONGO_URL);
-    console.log("Connected to db at PORT :", process.env.PORT);
+    console.log("DB & server started on port " + process.env.PORT);
   } catch (error) {
     console.log(error);
   }

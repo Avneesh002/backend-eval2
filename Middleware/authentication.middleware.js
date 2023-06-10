@@ -1,26 +1,26 @@
+const express = require("express");
 const jwt = require("jsonwebtoken");
-const os = require("os");
+const secretKey = "emi";
 
-function authenticate(req, res, next) {
+function authentication(req, res, next) {
   const token = req.headers.authorization;
 
-  if (token) {
-    try {
-      const verify = jwt.verify(token, "socialMedia");
-      req.body.user = verify.user;
+  try {
+    if (token) {
+      const decoded = jwt.verify(token, secretKey);
 
-      if (os.type() === "Linux" && os.platform() === "android") {
-        req.body.device = "Android";
+      if (decoded) {
+        req.body.userId = decoded.userId;
+        next();
       } else {
-        req.body.device = "Windows";
+        res.send({ msg: "Login First" });
       }
-      next();
-    } catch (error) {
-      res.send({ msg: "Login failed" });
+    } else {
+      res.send({ msg: "Login First" });
     }
-  } else {
-    res.send({ msg: "Login failed" });
+  } catch (error) {
+    res.send({ msg: "Login First" });
   }
 }
 
-module.exports = { authenticate };
+module.exports = { authentication };
