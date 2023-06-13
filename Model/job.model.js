@@ -8,7 +8,7 @@ const jobSchema = mongoose.Schema({
   role: { type: String, required: true },
   level: { type: String, required: true },
   position: { type: String, required: true },
-  language: { type: String, required: true },
+  language: { type: [String], required: true },
   contract: { type: String, required: true },
 });
 
