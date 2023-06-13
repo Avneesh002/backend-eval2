@@ -23,11 +23,12 @@ jobRouter.post("/add", async (req, res) => {
   }
 });
 
-jobRouter.get("/filter/", async (req, res) => {
-  const filter = req.query.params;
+jobRouter.get("/filter", async (req, res) => {
+  const filter = req.query;
+
   try {
-    // const data = await jobModel.find({filter});
-    res.send({ msg: "Job Successfully posted" });
+    const data = await jobModel.find(filter);
+    res.send({ data });
   } catch (error) {
     res.send({ error });
   }
@@ -38,13 +39,7 @@ jobRouter.get("/search", async (req, res) => {
   const regex = new RegExp(s, "i");
   try {
     const data = await jobModel.find({
-      $or: [
-        { city: regex },
-        { location: regex },
-        { company: regex },
-        { role: regex },
-        { contract: regex },
-      ],
+      language: regex,
     });
     res.send({ data });
   } catch (error) {
