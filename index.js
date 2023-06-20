@@ -7,6 +7,9 @@ const { userRouter } = require("./Router/user.Router");
 const { emiRouter } = require("./Router/calculate.Route");
 const { authentication } = require("./Middleware/authentication.middleware");
 const { jobRouter } = require("./Router/job.Router");
+const { boardRouter } = require("./Router/board.Router");
+const { taskRouter } = require("./Router/task.Router");
+const { subtaskRouter } = require("./Router/subtask.Router");
 
 const app = express();
 
@@ -17,6 +20,9 @@ app.use("/job", jobRouter);
 app.use("/user", userRouter);
 app.use(authentication);
 app.use("/emi", emiRouter);
+app.use("/board", boardRouter);
+app.use("/task", taskRouter);
+app.use("/subtask", subtaskRouter);
 
 app.listen(process.env.PORT, async () => {
   try {
